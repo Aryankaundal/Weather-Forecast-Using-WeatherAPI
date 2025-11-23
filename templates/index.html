@@ -29,7 +29,9 @@
     </div>
 
     <!-- RIGHT -->
-    <div class="right-stack">
+<div class="right-stack">
+
+    <div class="location-temp-wrap">
         <div class="location-label">{{ city }}, {{ country }}</div>
 
         <div class="temp-summary-compact">
@@ -43,18 +45,17 @@
                 <div>Night — <strong>{{ night_temp }}°C</strong></div>
             </div>
         </div>
-
-        <form class="search-form" method="GET" action="/">
-            <input 
-              type="text" 
-              name="city" 
-              class="search-input" 
-              placeholder="Search location..."
-              value="{{ request.args.get('city', '') }}"
-            >
-            <button class="search-btn" type="submit">🔍</button>
-        </form>
     </div>
+
+    <form class="search-form" method="GET" action="/">
+        <input type="text" name="city" class="search-input" placeholder="Search location..." value="{{ request.args.get('city', '') }}">
+        <button class="search-btn" type="submit">🔍</button>
+    </form>
+
+</div>
+
+
+
 
 </header>
 

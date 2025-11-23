@@ -1,379 +1,331 @@
-:root {
-  --white: #fff;
+/* style.css — cleaned, responsive, alignment fixes
+   Generated for DailyClimate app
+   Tips: tweak --icon-offset if small adjustments needed for perfect alignment
+*/
+:root{
+  --white:#fff;
   --glass: rgba(255,255,255,0.06);
   --glass-strong: rgba(255,255,255,0.12);
+  --ui-duration: 0.9s;
+  --icon-offset: 46px; /* width of day/night icon + gap — used to align city text */
 }
 
 /* ---------------- page bg ---------------- */
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Poppins", sans-serif;
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Poppins",sans-serif;
   background-image: url("/static/images/sunny.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: white;
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
+/* dark overlay for contrast (not animated) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.22), rgba(0,0,0,0.06) 40%, rgba(0,0,0,0.5));
-  pointer-events: none;
+  pointer-events:none;
+  z-index:0;
 }
 
-/* layout */
-.stage { 
-  min-height: 100vh; 
-  display: flex; 
-  flex-direction: column; 
-}
+/* ---------- layout ---------- */
+.stage{ min-height:100vh; display:flex; flex-direction:column; position:relative; z-index:1; }
 
 /* top row */
-.top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 36px 48px;
-  z-index: 2;
+.top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:36px 48px;
+  gap:24px;
+  z-index:3;
 }
 
-/* search */
-.search-form {
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* LEFT / RIGHT stacks */
+.left-stack, .right-stack { display:flex; flex-direction:column; gap:10px; }
 
-.search-input {
+/* ---------------- search ---------------- */
+.search-form { margin-top:18px; display:flex; align-items:center; gap:10px; }
+.search-input{
+  width:260px; padding:10px 16px; font-size:15px;
+  border-radius:10px; border:1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.06); backdrop-filter: blur(8px);
+  color:white; outline:none; transition: .18s ease;
+}
+.search-input::placeholder{ color: rgba(255,255,255,0.65); }
+.search-input:focus{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.36); box-shadow:0 6px 18px rgba(0,0,0,0.35); }
+.search-btn{
+  background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22);
+  padding:10px 12px; border-radius:10px; cursor:pointer; color:white; font-size:18px;
+}
+.search-btn:hover{ transform: translateY(-2px); }
+
+/* ---------- labels / clock ---------- */
+.location-label{ margin-top:4px; font-size:34px; font-weight:600; color: rgba(255,255,255,0.95); }
+.time{ font-size:72px; font-weight:600; line-height:0.95; }
+.date{ margin-top:8px; font-size:20px; font-weight:300; opacity:0.95; }
+
+/* ---------- info glass ---------- */
+.info-glass{
   width: 260px;
-  padding: 10px 16px;
-  font-size: 15px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
+  padding: 18px 22px;
+  margin-top: 20px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.06);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
   color: white;
-  outline: none;
-  transition: 0.25s;
+  font-size:15px;
+}
+.info-row{ display:flex; justify-content:space-between; margin-bottom:8px; }
+.info-row span:first-child{ color: #e8e8e8; }
+.info-row span:last-child{ font-weight:600; }
+
+/* ---------- compact day/night summary ---------- */
+.temp-summary-compact{ display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+.temp-summary-compact .temp-line{
+  display:flex; align-items:center; gap:12px; font-size:22px; font-weight:500;
+}
+.temp-summary-compact .temp-line img.icon{
+  width:38px !important; height:38px !important; object-fit:contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
 }
 
-.search-input::placeholder {
-  color: rgba(255,255,255,0.75);
+/* ---------- right block wrapper (alignment helpers) ---------- */
+/*
+  We introduce .location-temp-wrap to allow precise alignment between
+  the city label and the day/night lines. The icon-offset variable
+  should match the width+gap of the day/night icon to align the first
+  letter of the city with the first letter of the 'Day' text.
+*/
+.location-temp-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end; /* keep everything right aligned as a group */
+  width: 100%;
 }
 
-.search-input:focus {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.45);
-  box-shadow: 0 0 10px rgba(255,255,255,0.3);
+/* Move the location text right by the icon offset so its first letter lines up
+   with the 'Day' text that starts after the icon. Adjust --icon-offset if you
+   want to nudge alignment. */
+.location-label{
+  transform: translateX(var(--icon-offset));
+  text-align: right;
 }
 
-.search-btn {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  backdrop-filter: blur(10px);
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  font-size: 18px;
-  transition: 0.2s;
+/* Keep the day/night summary anchored to the right (no extra translation) */
+.temp-summary-compact{
+  transform: none;
 }
 
-.search-btn:hover {
-  background: rgba(255,255,255,0.25);
-  transform: translateY(-2px);
-}
-
-/* labels */
-.location-label {
-  margin-top: 4px;
-  font-size: 34px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.95);
-}
-
-.time { font-size: 72px; font-weight: 600; line-height: 0.95; }
-.date { margin-top: 8px; font-size: 20px; font-weight: 300; opacity: 0.95; }
-
-.main-space { flex: 1 1 auto; }
-
-/* bottom forecast bar */
-.bottom-glass {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  display: flex;
-  justify-content: center;
-  padding: 26px;
+/* ---------- bottom forecast panel (desktop fixed) ---------- */
+.bottom-glass{
+  position:fixed; left:0; right:0; bottom:0; z-index:4;
+  display:flex; justify-content:center; padding:26px;
   background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.38));
   backdrop-filter: blur(8px) saturate(120%);
   border-top: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 -12px 40px rgba(0,0,0,0.6);
 }
 
-.cards-row {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  gap: 18px;
-  align-items: stretch;
-  padding: 6px 12px;
+/* container for the day cards */
+.cards-row{
+  width:100%; max-width:1200px; display:flex; gap:18px; align-items:stretch; padding:6px 12px;
+  box-sizing:border-box;
+  overflow:visible;
 }
 
-/* ===========================
-   FORECAST — FIXED CLEAN VERSION
-   =========================== */
-.day-card {
+/* ---------- day-card ---------- */
+.day-card{
   flex: 1 1 0;
-  min-width: 120px;
-  max-width: 170px;
-  padding: 22px;
-  height: 200px;
-  border-radius: 14px;
-  text-align: center;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: inset 0 4px 14px rgba(0,0,0,0.35);
+  min-width:120px;
+  max-width:170px;
+  padding:20px;
+  height:200px;
+  border-radius:14px;
+  text-align:center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 4px 14px rgba(0,0,0,0.32);
   color: #fff;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+  transform-style:preserve-3d;
+  transition: transform .25s ease, box-shadow .25s ease;
+  opacity:0; /* for animate-in */
 }
 
-/* Forecast icon */
-.day-card img.icon {
-  width: 70px !important;
-  height: 70px !important;
-  object-fit: contain;
-  margin-top: 6px;
+/* Hover pop */
+.day-card:hover{
+  transform: translateY(-10px) scale(1.04) rotateX(4deg) rotateY(-4deg);
+  box-shadow: 0 20px 36px rgba(0,0,0,0.55);
 }
 
-/* Day name (Sun, Mon, Tue...) */
-.day-card .day {
-  font-size: 20px;
-  font-weight: 600;
-  margin-top: 6px;
-  margin-bottom: 4px;
+/* icon */
+.day-card img.icon{
+  width:70px !important; height:70px !important; object-fit:contain; margin-top:8px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45));
 }
 
-/* Temperatures */
-.day-card .temps {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.4;
-}
+/* labels */
+.day-card .day{ font-size:20px; font-weight:600; margin-top:6px; margin-bottom:6px; }
+.day-card .temps{ font-size:15px; font-weight:400; line-height:1.4; color: rgba(255,255,255,0.95); }
 
-/* info glass panel */
-.info-glass {
-  width: 260px;
-  padding: 18px 22px;
-  margin-top: 20px;
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(14px);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.25);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-  font-size: 15px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.left-stack { display: flex; flex-direction: column; gap: 10px; }
-.right-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-
-/* ==============================
-   FIX DAY/NIGHT SUMMARY ICONS (TOP RIGHT)
-   ============================== */
-.temp-summary-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.temp-summary-compact .temp-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.temp-summary-compact .temp-line img.icon {
-  width: 38px !important;
-  height: 38px !important;
-}
-
-@keyframes fadeSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* apply to all UI containers */
-.top-row,
-.left-stack,
-.right-stack,
-.info-glass,
-.location-label,
-.temp-summary-compact,
-.search-form,
-.bottom-glass {
-  opacity: 0;
-  animation: fadeSlideIn 1s ease forwards;
-}
-
-/* Stagger for smoother effect */
-.left-stack { animation-delay: 0.1s; }
-.right-stack { animation-delay: 0.2s; }
-.info-glass { animation-delay: 0.3s; }
-.location-label { animation-delay: 0.35s; }
-.temp-summary-compact { animation-delay: 0.45s; }
-.search-form { animation-delay: 0.55s; }
-.bottom-glass { animation-delay: 0.7s; }
-
-/* ======================================
-   7-DAY FORECAST CARD ANIMATION
-   (already added but kept for completeness)
-   ====================================== */
-
+/* ---------- animations ---------- */
 @keyframes slideIn {
-    0% { opacity: 0; transform: translateY(25px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0%{ opacity:0; transform: translateY(26px) scale(.995); }
+  60%{ opacity:1; transform: translateY(-6px) scale(1.01); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+.day-card.animate-in{
+  animation: slideIn var(--ui-duration) cubic-bezier(.2,.9,.3,1) forwards;
 }
 
-.day-card {
-    opacity: 0;
+/* fade+slide for top UI elements (not background) */
+@keyframes fadeSlideIn {
+  0%{ opacity:0; transform: translateY(18px); }
+  100%{ opacity:1; transform: translateY(0); }
 }
 
-.day-card.animate-in {
-    animation: slideIn 0.9s ease forwards;
+/* apply to main UI blocks with small stagger */
+.top-row, .left-stack, .right-stack, .info-glass, .location-label, .temp-summary-compact, .search-form {
+  opacity:0; animation: fadeSlideIn .7s ease forwards; animation-delay: .08s;
+}
+.left-stack{ animation-delay: .10s; }
+.info-glass{ animation-delay: .16s; }
+.right-stack{ animation-delay: .20s; }
+.location-label{ animation-delay: .22s; }
+.temp-summary-compact{ animation-delay: .26s; }
+.search-form{ animation-delay: .30s; }
+.bottom-glass{ animation: fadeSlideIn .9s ease forwards; animation-delay: .38s; }
+
+/* ---------- copyright (optional) ---------- */
+.copyright{ position: fixed; bottom:12px; right:16px; font-size:13px; color: rgba(255,255,255,0.75); z-index:6; pointer-events:none; }
+
+/* ============================
+   Responsive rules (hybrid behavior)
+   ============================ */
+
+/* Small screens: make forecast bar non-fixed and horizontally scrollable */
+@media (max-width: 900px){
+  .top-row{ padding: 26px 22px; gap:16px; }
+  .time{ font-size:56px; }
+  .location-label{ font-size:30px; }
+
+  /* make bottom bar scrollable and not fixed */
+  .bottom-glass{
+    position: relative;
+    bottom: unset;
+    left: 0;
+    right: 0;
+    margin-top: 12px;
+    padding: 14px 8px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.28));
+    border-top: none;
+    box-shadow: none;
+  }
+
+  .cards-row{
+    display:flex; gap:12px; padding: 6px 6px; overflow-x:auto;
+    -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .cards-row::-webkit-scrollbar { height:8px; }
+  .cards-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius:8px; }
+
+  .day-card{
+    flex: 0 0 140px; width:140px; min-width:140px; height: 180px;
+    scroll-snap-align: center;
+    opacity:1; /* show immediately when in non-fixed flow */
+  }
+
+  .day-card img.icon{ width:60px !important; height:60px !important; }
+  .day-card .day{ font-size:18px; }
+  .day-card .temps{ font-size:13px; line-height:1.35; }
+
+  /* place copyright above forecast on small screens */
+  .copyright{ bottom: 100px; right: 14px; }
 }
 
-/* POP-UP HOVER EFFECT FOR DAY CARDS */
-.day-card {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* Very small phones */
+@media (max-width: 420px){
+  .time{ font-size:40px; }
+  .date{ font-size:16px; }
+  .left-stack, .right-stack { gap:8px; }
+  .info-glass{ width:220px; padding:14px; font-size:14px; }
+  .search-input{ width: 160px; font-size:14px; padding:8px 12px; }
+  .day-card{ width:130px; min-width:130px; height:170px; padding:16px; }
+  .day-card img.icon{ width:52px !important; height:52px !important; }
+  .location-label{ font-size:22px; }
 }
 
-.day-card:hover {
-    transform: translateY(-10px) scale(1.05) rotateX(5deg) rotateY(-5deg);
-    box-shadow: 0 18px 38px rgba(0,0,0,0.50);
+/* Large screens increase sizes */
+@media (min-width:1400px){
+  .day-card{ height: 240px; padding:26px; }
+  .day-card img.icon{ width:90px !important; height:90px !important; }
+  .time{ font-size:88px; }
+  .location-label{ font-size:40px; }
 }
-.copyright {
-    position: fixed;
-    bottom: 12px;
-    right: 16px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.75);
-    z-index: 10;
-    pointer-events: none;
-}
+
+/* utility: ensure day-card icons are always visible if image fails */
+.day-card img.icon{ background: rgba(0,0,0,0.03); border-radius:10px; }
+
+/* ============================================
+   FULL RESPONSIVE FIX FOR MOBILE (<600px)
+   ============================================ */
+
 @media (max-width: 600px) {
 
+  /* STACK EVERYTHING VERTICALLY */
   .top-row {
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-  }
-
-  .left-stack, .right-stack {
-    width: 100%;
+    justify-content: flex-start;
     align-items: flex-start;
-    text-align: left;
+    gap: 20px;
+    padding: 24px;
   }
 
-  .location-label {
-    font-size: 26px;
-  }
+  /* Time + Date */
+  .time { font-size: 48px; }
+  .date { font-size: 18px; }
 
-  .time {
-    font-size: 48px;
-  }
+  /* Info glass */
+  .info-glass { width: 90%; max-width: 340px; padding: 16px 20px; margin-top: 10px; }
+  .info-row span { font-size: 14px; }
 
-  .temp-summary-compact .temp-line {
-    font-size: 18px;
-  }
+  /* RIGHT STACK (city + day/night + search) */
+  .right-stack { width: 100%; align-items: flex-start; gap: 12px; }
 
-  .search-input {
-    width: 100%;
-  }
+  .location-label { font-size: 26px; margin-bottom: 4px; transform: none; text-align: left; }
+  .temp-summary-compact { align-items: flex-start; }
+  .temp-summary-compact .temp-line { font-size: 16px; }
+  .temp-summary-compact img.icon { width: 30px !important; height: 30px !important; }
 
-  .cards-row {
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-  }
+  /* Search bar full width */
+  .search-form { width: 100%; }
+  .search-input { width: 100%; padding: 12px 16px; font-size: 16px; }
 
-  .day-card {
-    width: 45%;
-    min-width: 130px;
-    height: 180px;
-  }
+  .bottom-glass { position: relative; padding: 16px 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+  .cards-row { flex-wrap: nowrap !important; min-width: max-content; padding: 0 12px; gap: 12px; }
 
-  .day-card img.icon {
-    width: 58px !important;
-    height: 58px !important;
-  }
+  .day-card { width: 130px; min-width: 130px; height: 180px; }
+  .day-card img.icon { width: 55px !important; height: 55px !important; }
+  .day-card .day { font-size: 18px; }
+  .day-card .temps { font-size: 14px; }
+
+  /* Fix copyright */
+  .copyright { font-size: 11px; bottom: 8px; right: 10px; }
 }
-@media (max-width: 900px) {
 
-  .top-row {
-    padding: 28px 24px;
-  }
+/* small tweak: if icons are not loading (empty src), reserve space and fallback */
+.day-card img.icon[alt=""]{ visibility:hidden; }
+.day-card img.icon { min-height: 56px; }
 
-  .location-label {
-    font-size: 30px;
-  }
-
-  .time {
-    font-size: 56px;
-  }
-
-  .cards-row {
-    gap: 14px;
-    padding: 8px;
-  }
-
-  .day-card {
-    height: 180px;
-  }
-
-  .day-card img.icon {
-    width: 60px !important;
-    height: 60px !important;
-  }
-}
-@media (min-width: 1400px) {
-  .day-card {
-    height: 220px;
-  }
-
-  .day-card img.icon {
-    width: 80px !important;
-    height: 80px !important;
-  }
-
-  .location-label {
-    font-size: 40px;
-  }
-
-  .time {
-    font-size: 84px;
-  }
-}
+/* END of CSS */
