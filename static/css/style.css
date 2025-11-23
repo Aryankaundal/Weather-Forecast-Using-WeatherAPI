@@ -284,3 +284,96 @@ body::before {
     z-index: 10;
     pointer-events: none;
 }
+@media (max-width: 600px) {
+
+  .top-row {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .left-stack, .right-stack {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .location-label {
+    font-size: 26px;
+  }
+
+  .time {
+    font-size: 48px;
+  }
+
+  .temp-summary-compact .temp-line {
+    font-size: 18px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .cards-row {
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .day-card {
+    width: 45%;
+    min-width: 130px;
+    height: 180px;
+  }
+
+  .day-card img.icon {
+    width: 58px !important;
+    height: 58px !important;
+  }
+}
+@media (max-width: 900px) {
+
+  .top-row {
+    padding: 28px 24px;
+  }
+
+  .location-label {
+    font-size: 30px;
+  }
+
+  .time {
+    font-size: 56px;
+  }
+
+  .cards-row {
+    gap: 14px;
+    padding: 8px;
+  }
+
+  .day-card {
+    height: 180px;
+  }
+
+  .day-card img.icon {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
+@media (min-width: 1400px) {
+  .day-card {
+    height: 220px;
+  }
+
+  .day-card img.icon {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .location-label {
+    font-size: 40px;
+  }
+
+  .time {
+    font-size: 84px;
+  }
+}
