@@ -281,42 +281,74 @@ body::before{
    FULL RESPONSIVE FIX FOR MOBILE (<600px)
    ============================================ */
 
+/* ============================
+   MOBILE (<600px) — OPTION C  
+   City + Temps under clock, left aligned
+   ============================ */
 @media (max-width: 600px) {
 
-  /* STACK EVERYTHING VERTICALLY */
+  /* Stack everything */
   .top-row {
     flex-direction: column;
-    justify-content: flex-start;
     align-items: flex-start;
     gap: 20px;
-    padding: 24px;
   }
 
-  /* Time + Date */
-  .time { font-size: 48px; }
-  .date { font-size: 18px; }
+  /* Move RIGHT STACK under LEFT STACK */
+  .right-stack {
+    width: 100%;
+    align-items: flex-start !important;   /* ← left align */
+    text-align: left !important;
+    gap: 10px;
+    margin-top: -10px;  /* closer to time/date */
+  }
 
-  /* Info glass */
-  .info-glass { width: 90%; max-width: 340px; padding: 16px 20px; margin-top: 10px; }
-  .info-row span { font-size: 14px; }
+  /* City + Day/Night block */
+  .location-temp-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 6px;
+  }
 
-  /* RIGHT STACK (city + day/night + search) */
-  .right-stack { width: 100%; align-items: flex-start; gap: 12px; }
+  .location-label {
+    font-size: 26px;
+  }
 
-  .location-label { font-size: 26px; margin-bottom: 4px; transform: none; text-align: left; }
-  .temp-summary-compact { align-items: flex-start; }
-  .temp-summary-compact .temp-line { font-size: 16px; }
-  .temp-summary-compact img.icon { width: 30px !important; height: 30px !important; }
+  .temp-summary-compact {
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 4px;
+  }
 
-  /* Search bar full width */
-  .search-form { width: 100%; }
-  .search-input { width: 100%; padding: 12px 16px; font-size: 16px; }
+  .temp-summary-compact .temp-line {
+    font-size: 17px;
+  }
+
+  .temp-summary-compact img.icon {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  /* Search bar stays separate */
+  .search-form {
+    width: 100%;
+    align-self: flex-start !important;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+
+
 
   .bottom-glass { position: relative; padding: 16px 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
   .cards-row { flex-wrap: nowrap !important; min-width: max-content; padding: 0 12px; gap: 12px; }
 
   .day-card { width: 130px; min-width: 130px; height: 180px; }
-  .day-card img.icon { width: 55px !important; height: 55px !important; }
+  .day-card img.icon { width: 55px !important; height: 55px !important;justify-content: flex-start !important; }
   .day-card .day { font-size: 18px; }
   .day-card .temps { font-size: 14px; }
 
@@ -327,5 +359,3 @@ body::before{
 /* small tweak: if icons are not loading (empty src), reserve space and fallback */
 .day-card img.icon[alt=""]{ visibility:hidden; }
 .day-card img.icon { min-height: 56px; }
-
-/* END of CSS */
