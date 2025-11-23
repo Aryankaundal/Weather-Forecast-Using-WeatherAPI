@@ -1,7 +1,3 @@
-/* style.css — cleaned, responsive, alignment fixes
-   Generated for DailyClimate app
-   Tips: tweak --icon-offset if small adjustments needed for perfect alignment
-*/
 :root{
   --white:#fff;
   --glass: rgba(255,255,255,0.06);
@@ -98,13 +94,7 @@ body::before{
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
 }
 
-/* ---------- right block wrapper (alignment helpers) ---------- */
-/*
-  We introduce .location-temp-wrap to allow precise alignment between
-  the city label and the day/night lines. The icon-offset variable
-  should match the width+gap of the day/night icon to align the first
-  letter of the city with the first letter of the 'Day' text.
-*/
+
 .location-temp-wrap{
   display:flex;
   flex-direction:column;
@@ -112,9 +102,7 @@ body::before{
   width: 100%;
 }
 
-/* Move the location text right by the icon offset so its first letter lines up
-   with the 'Day' text that starts after the icon. Adjust --icon-offset if you
-   want to nudge alignment. */
+
 .location-label{
   transform: translateX(var(--icon-offset));
   text-align: right;
@@ -208,11 +196,7 @@ body::before{
 /* ---------- copyright (optional) ---------- */
 .copyright{ position: fixed; bottom:12px; right:16px; font-size:13px; color: rgba(255,255,255,0.75); z-index:6; pointer-events:none; }
 
-/* ============================
-   Responsive rules (hybrid behavior)
-   ============================ */
 
-/* Small screens: make forecast bar non-fixed and horizontally scrollable */
 @media (max-width: 900px){
   .top-row{ padding: 26px 22px; gap:16px; }
   .time{ font-size:56px; }
@@ -277,14 +261,6 @@ body::before{
 /* utility: ensure day-card icons are always visible if image fails */
 .day-card img.icon{ background: rgba(0,0,0,0.03); border-radius:10px; }
 
-/* ============================================
-   FULL RESPONSIVE FIX FOR MOBILE (<600px)
-   ============================================ */
-
-/* ============================
-   MOBILE (<600px) — OPTION C  
-   City + Temps under clock, left aligned
-   ============================ */
 @media (max-width: 600px) {
 
   /* Stack everything */
@@ -352,10 +328,73 @@ body::before{
   .day-card .day { font-size: 18px; }
   .day-card .temps { font-size: 14px; }
 
-  /* Fix copyright */
+ 
   .copyright { font-size: 11px; bottom: 8px; right: 10px; }
 }
 
-/* small tweak: if icons are not loading (empty src), reserve space and fallback */
 .day-card img.icon[alt=""]{ visibility:hidden; }
 .day-card img.icon { min-height: 56px; }
+
+.mobile-bottom-gradient {
+    display: none;                  /* hidden on desktop */
+}
+
+/* Show only on mobile (<600px) */
+@media (max-width: 600px) {
+    .mobile-bottom-gradient {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px; /* adjust if needed */
+        background: linear-gradient(
+            to bottom,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,0.25) 40%,
+            rgba(0,0,0,0.55) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* Hide the 7-day forecast */
+    .bottom-glass,
+    .cards-row,
+    .day-card {
+        display: none !important;
+    }
+}
+/* Hidden on desktop */
+.bottom-glass-mobile {
+    display: none;
+}
+
+/* Show empty bottom bar for mobile devices */
+/* EMPTY BOTTOM BAR FOR MOBILE */
+.mobile-bottom-glass {
+    display: none;                /* hidden by default */
+    width: 100%;
+    height: 90px;                 /* adjust height as needed */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;                  /* ABOVE everything */
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.55),
+        rgba(0,0,0,0.00)
+    );
+    backdrop-filter: blur(6px);
+}
+@media (max-width: 600px) {
+    .bottom-glass {
+        display: none !important;   /* hide forecast */
+    }
+
+    .mobile-bottom-glass {
+        display: block !important;  /* show empty bottom */
+    }
+}
+

@@ -11,128 +11,101 @@
 
 <body>
   <div class="stage">
+    <div class="mobile-bottom-gradient"></div>
 
-<header class="top-row">
-
-    <!-- LEFT -->
-    <div class="left-stack">
+    <header class="top-row">
+      <div class="left-stack">
         <div class="time" id="clock">--:--</div>
         <div class="date" id="date">Loading...</div>
 
         <div class="info-glass">
-            <div class="info-row"><span>Humidity</span><span>{{ humidity }}%</span></div>
-            <div class="info-row"><span>Pressure</span><span>{{ pressure }} hPa</span></div>
-            <div class="info-row"><span>Wind Speed</span><span>{{ wind }} kph</span></div>
-            <div class="info-row"><span>Sunrise</span><span>{{ sunrise }}</span></div>
-            <div class="info-row"><span>Sunset</span><span>{{ sunset }}</span></div>
+          <div class="info-row"><span>Humidity</span><span>{{ humidity }}%</span></div>
+          <div class="info-row"><span>Pressure</span><span>{{ pressure }} hPa</span></div>
+          <div class="info-row"><span>Wind Speed</span><span>{{ wind }} kph</span></div>
+          <div class="info-row"><span>Sunrise</span><span>{{ sunrise }}</span></div>
+          <div class="info-row"><span>Sunset</span><span>{{ sunset }}</span></div>
         </div>
-    </div>
+      </div>
 
-    <!-- RIGHT -->
-<div class="right-stack">
+      <div class="right-stack">
+        <div class="location-temp-wrap">
+          <div class="location-label">{{ city }}, {{ country }}</div>
 
-    <div class="location-temp-wrap">
-        <div class="location-label">{{ city }}, {{ country }}</div>
-
-        <div class="temp-summary-compact">
+          <div class="temp-summary-compact">
             <div class="temp-line">
-                <img class="icon" src="https://img.icons8.com/emoji/48/sun-emoji.png">
-                <div>Day — <strong>{{ day_temp }}°C</strong></div>
+              <img class="icon" src="https://img.icons8.com/emoji/48/sun-emoji.png">
+              <div>Day — <strong>{{ day_temp }}°C</strong></div>
             </div>
-
             <div class="temp-line">
-                <img class="icon" src="https://img.icons8.com/emoji/48/crescent-moon-emoji.png">
-                <div>Night — <strong>{{ night_temp }}°C</strong></div>
+              <img class="icon" src="https://img.icons8.com/emoji/48/crescent-moon-emoji.png">
+              <div>Night — <strong>{{ night_temp }}°C</strong></div>
             </div>
-        </div>
-    </div>
-
-    <form class="search-form" method="GET" action="/">
-        <input type="text" name="city" class="search-input" placeholder="Search location..." value="{{ request.args.get('city', '') }}">
-        <button class="search-btn" type="submit">🔍</button>
-    </form>
-
-</div>
-
-
-
-
-</header>
-
-<main class="main-space"></main>
-
-<!-- FORECAST -->
-<section class="bottom-glass">
-  <div class="cards-row">
-
-    {% if daily %}
-      {% for d in daily %}
-      <div class="day-card">
-          <div class="day">{{ d.day }}</div>
-
-          <img src="{{ d.icon }}" class="icon" alt="weather-icon">
-
-          <div class="temps">
-              Night — {{ d.temp_night }}°C<br>
-              Day — {{ d.temp_day }}°C
           </div>
-      </div>
-      {% endfor %}
-    {% else %}
-      {% for x in range(7) %}
-      <div class="day-card">
-          <div class="day">--</div>
-          <div style="
-            height:68px;
-            width:68px;
-            border-radius:50%;
-            background:rgba(255,255,255,0.04);
-            margin:18px auto 10px;
-          "></div>
-          <div class="temps">Night — --°C<br>Day — --°C</div>
-      </div>
-      {% endfor %}
-    {% endif %}
+        </div>
 
+        <form class="search-form" method="GET" action="/">
+          <input type="text" name="city" class="search-input" placeholder="Search location..." value="{{ request.args.get('city', '') }}">
+          <button class="search-btn" type="submit">🔍</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="main-space"></main>
+
+    <div class="mobile-bottom-glass"></div>
+
+    <section class="bottom-glass">
+      <div class="cards-row">
+        {% if daily %}
+  {% for d in daily %}
+    <div class="day-card">
+      <div class="day">{{ d.day }}</div>
+      <img src="{{ d.icon }}" class="icon" alt="weather-icon">
+      <div class="temps">
+        Night — {{ d.temp_night }}°C<br>
+        Day — {{ d.temp_day }}°C
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  {% for x in range(7) %}
+    <div class="day-card">
+      <div class="day">--</div>
+      <div style="height:68px;width:68px;border-radius:50%;background:rgba(255,255,255,0.04);margin:18px auto 10px;"></div>
+      <div class="temps">Night — --°C<br>Day — --°C</div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+      </div>
+      <div class="copyright">© 2025 Aryan</div>
+    </section>
   </div>
-  <div class="copyright">© 2025 Aryan</div>
 
-</section>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
 
-</div>
+      document.getElementById('date').textContent =
+        now.toLocaleDateString(undefined, {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'short'
+        });
+    }
 
-<!-- CLOCK SCRIPT -->
-<script>
-function updateClock() {
-  const now = new Date();
-  
-  document.getElementById('clock').textContent =
-    String(now.getHours()).padStart(2, '0') + ":" +
-    String(now.getMinutes()).padStart(2, '0');
+    updateClock();
+    setInterval(updateClock, 30000);
 
-  document.getElementById('date').textContent =
-    now.toLocaleDateString(undefined, {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'short'
+    window.addEventListener("DOMContentLoaded", () => {
+      const cards = document.querySelectorAll(".day-card");
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add("animate-in"), i * 120);
+      });
     });
-}
-
-updateClock();
-
-setInterval(updateClock, 30000);
-// Slide-in animation for each day card
-window.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".day-card");
-
-    cards.forEach((card, index) => {
-        setTimeout(() => {
-            card.classList.add("animate-in");
-        }, index * 120);   // stagger delay
-    });
-});
-
-</script>
-
+  </script>
 </body>
 </html>
