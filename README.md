@@ -3,6 +3,9 @@
 A modern, glass-UI weather application built using **Flask**, **WeatherAPI**, and **responsive front-end design**.  
 It shows **current weather**, **sunrise/sunset**, and a beautiful **7-day animated forecast**.
 
+A simple and extensible blog website built using Python and Flask. This project lets users read, create, edit, and manage blog posts through a modern web interface.
+
+**Live Demo:** https://weather-forecast-using-weatherapi.onrender.com
 ---
 
 ## 🚀 Features
